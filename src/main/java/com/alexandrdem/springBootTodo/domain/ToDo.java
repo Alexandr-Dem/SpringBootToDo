@@ -1,4 +1,4 @@
-package com.alexandrdem.domain;
+package com.alexandrdem.springBootTodo.domain;
 
 import lombok.Data;
 
