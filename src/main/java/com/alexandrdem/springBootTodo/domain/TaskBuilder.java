@@ -3,32 +3,32 @@ package com.alexandrdem.springBootTodo.domain;
 /**
  * @author AlexanderDementev on 02.09.2021
  */
-public class ToDoBuilder {
+public class TaskBuilder {
 
     private String id;
 
     private String description;
 
-    public static ToDoBuilder create() {
-        return new ToDoBuilder();
+    public static TaskBuilder create() {
+        return new TaskBuilder();
     }
 
-    public ToDoBuilder withId(String id) {
+    public TaskBuilder withId(String id) {
         this.id = id;
         return this;
     }
 
-    public ToDoBuilder withDescription(String description) {
+    public TaskBuilder withDescription(String description) {
         this.description = description;
         return this;
     }
 
-    public ToDo build() {
-        ToDo toDo = new ToDo(description);
+    public Task build() {
+        Task task = new Task(description);
         if (id != null) {
-            toDo.setId(id);
+            task.setId(id);
         }
-        return toDo;
+        return task;
     }
 
 }

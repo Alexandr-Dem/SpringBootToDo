@@ -9,10 +9,10 @@ import java.util.stream.Stream;
 /**
  * @author AlexanderDementev on 03.09.2021
  */
-public class ToDoValidationErrorBuilder {
+public class ValidationErrorBuilder {
 
-    public static ToDoValidationError fromBindingError(Errors errors) {
-        ToDoValidationError error = new ToDoValidationError(String.format("Ошибка валидации. Количество нарушений: %s.", errors.getErrorCount()));
+    public static ValidationErrorDto fromBindingError(Errors errors) {
+        ValidationErrorDto error = new ValidationErrorDto(String.format("Ошибка валидации. Количество нарушений: %s.", errors.getErrorCount()));
         errors.getAllErrors().forEach(e -> error.addErrors(generateErrorString(e)));
         return error;
     }

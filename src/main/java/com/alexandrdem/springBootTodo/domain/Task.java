@@ -12,7 +12,7 @@ import java.util.UUID;
  * @author AlexanderDementev on 02.09.2021
  */
 @Data
-public class ToDo {
+public class Task {
 
     @Size(min = 36, max = 36)
     private String id;
@@ -25,13 +25,13 @@ public class ToDo {
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime modified;
 
-    public ToDo() {
+    public Task() {
         id = UUID.randomUUID().toString();
         completed = false;
         created = LocalDateTime.now();
     }
 
-    public ToDo(String descriptions) {
+    public Task(String descriptions) {
         this();
         this.descriptions = descriptions;
     }

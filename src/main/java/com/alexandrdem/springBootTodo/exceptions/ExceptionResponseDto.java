@@ -1,8 +1,10 @@
 package com.alexandrdem.springBootTodo.exceptions;
 
+import lombok.Data;
 /**
  * @author AlexanderDementev on 03.09.2021
  */
+@Data
 public class ExceptionResponseDto {
     
     private boolean success;
@@ -16,31 +18,5 @@ public class ExceptionResponseDto {
         this.httpCode = httpCode;
         this.message = message;
     }
-
-    public int getHttpCode() {
-        return httpCode;
-    }
-
-    public void setHttpCode(int httpCode) {
-        this.httpCode = httpCode;
-    }
-
-    public boolean isSuccess() {
-        return success;
-    }
-
-    public void setSuccess(boolean success) {
-        this.success = success;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-    
-    
     
 }

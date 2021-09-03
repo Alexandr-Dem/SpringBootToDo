@@ -9,13 +9,13 @@ import java.util.List;
  * @author AlexanderDementev on 03.09.2021
  */
 @Getter()
-public class ToDoValidationError {
+public class ValidationErrorDto {
 
     private List<String> errors = new ArrayList<>();
 
     private String errorMessage;
 
-    public ToDoValidationError(String errorMessage) {
+    public ValidationErrorDto(String errorMessage) {
         this.errorMessage = errorMessage;
     }
 
