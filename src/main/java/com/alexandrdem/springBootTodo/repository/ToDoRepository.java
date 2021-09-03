@@ -5,10 +5,7 @@ import com.alexandrdem.springBootTodo.domain.ToDoBuilder;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 /**
  * @author AlexanderDementev on 02.09.2021
@@ -21,8 +18,9 @@ public class ToDoRepository implements CommonRepository<ToDo> {
     @Override
     public ToDo save(ToDo domain) {
         ToDo toDo;
-        if (toDos.containsKey(domain.getId())) {
-            toDo = findById(domain.getId());
+        Optional<ToDo> taskFromCache = findById(domain.getId());
+        if (taskFromCache.isPresent()) {
+            toDo = taskFromCache.get();
             toDo.setCompleted(domain.isCompleted());
             toDo.setDescriptions(domain.getDescriptions());
             toDo.setModified(LocalDateTime.now());
@@ -47,8 +45,8 @@ public class ToDoRepository implements CommonRepository<ToDo> {
     }
 
     @Override
-    public ToDo findById(String id) {
-        return toDos.get(id);
+    public Optional<ToDo> findById(String id) {
+        return Optional.ofNullable(toDos.get(id));
     }
 
     @Override

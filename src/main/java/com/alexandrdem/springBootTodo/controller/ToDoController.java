@@ -2,6 +2,8 @@ package com.alexandrdem.springBootTodo.controller;
 
 import com.alexandrdem.springBootTodo.domain.ToDo;
 import com.alexandrdem.springBootTodo.domain.ToDoBuilder;
+import com.alexandrdem.springBootTodo.exceptions.ExceptionResponseDto;
+import com.alexandrdem.springBootTodo.exceptions.TaskException;
 import com.alexandrdem.springBootTodo.repository.CommonRepository;
 import com.alexandrdem.springBootTodo.validation.ToDoValidationErrorBuilder;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +32,7 @@ public class ToDoController {
 
     @GetMapping("{id}")
     public ToDo getById(@PathVariable String id) {
-        return toDoRepository.findById(id);
+        return toDoRepository.findById(id).orElse(null);
     }
 
     @RequestMapping(method = {RequestMethod.PUT, RequestMethod.POST})
@@ -43,8 +45,9 @@ public class ToDoController {
     }
 
     @PatchMapping("{id}")
-    public ResponseEntity<ToDo> completed(@PathVariable String id) {
-        ToDo task = toDoRepository.findById(id);
+    public ResponseEntity<ToDo> completed(@PathVariable String id) throws TaskException {
+        ToDo task = toDoRepository.findById(id)
+                .orElseThrow(() -> new TaskException(TaskException.TASK_NOT_FOUND));
         task.setCompleted(true);
         return ResponseEntity.ok(toDoRepository.save(task));
     }
@@ -53,4 +56,17 @@ public class ToDoController {
     public void delete(@PathVariable String id) {
         toDoRepository.delete(ToDoBuilder.create().withId(id).build());
     }
+
+    @ExceptionHandler
+    public ResponseEntity<ExceptionResponseDto> handleException(Exception exception) {
+        int status;
+        if (exception instanceof TaskException) {
+            status = 404;
+        } else {
+            exception = new TaskException("При обработки задачи было зафиксировано неожиданное исключение!", exception);
+            status = 500;
+        }
+        return ResponseEntity.status(status).body(new ExceptionResponseDto(status, exception.getMessage()));
+    }
+
 }
