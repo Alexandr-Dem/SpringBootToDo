@@ -1,8 +1,10 @@
 package com.alexandrdem.springBootTodo.repository;
 
 import com.alexandrdem.springBootTodo.domain.ToDo;
+import com.alexandrdem.springBootTodo.domain.ToDoBuilder;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -18,15 +20,20 @@ public class ToDoRepository implements CommonRepository<ToDo> {
 
     @Override
     public ToDo save(ToDo domain) {
+        ToDo toDo;
         if (toDos.containsKey(domain.getId())) {
-            ToDo toDo = findById(domain.getId());
+            toDo = findById(domain.getId());
             toDo.setCompleted(domain.isCompleted());
             toDo.setDescriptions(domain.getDescriptions());
-            toDo.setModified(toDo.getModified());
+            toDo.setModified(LocalDateTime.now());
         } else {
-            toDos.put(domain.getId(), domain);
+            toDo = new ToDoBuilder()
+                    .withDescription(domain.getDescriptions())
+                    .withId(domain.getId())
+                    .build();
+            toDos.put(toDo.getId(), toDo);
         }
-        return findById(domain.getId());
+        return toDo;
     }
 
     @Override

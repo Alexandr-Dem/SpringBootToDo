@@ -1,7 +1,9 @@
 package com.alexandrdem.springBootTodo.controller;
 
 import com.alexandrdem.springBootTodo.domain.ToDo;
+import com.alexandrdem.springBootTodo.domain.ToDoBuilder;
 import com.alexandrdem.springBootTodo.repository.CommonRepository;
+import com.alexandrdem.springBootTodo.validation.ToDoValidationErrorBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
@@ -34,9 +36,21 @@ public class ToDoController {
     @RequestMapping(method = {RequestMethod.PUT, RequestMethod.POST})
     public ResponseEntity<?> saveToDo(@Valid @RequestBody ToDo toDo, Errors errors) {
         if (errors.hasErrors()) {
-            return ResponseEntity.badRequest().body(errors.getErrorCount());
+            return ResponseEntity.badRequest().body(ToDoValidationErrorBuilder.fromBindingError(errors));
         }
         ToDo savedToDo = toDoRepository.save(toDo);
         return ResponseEntity.ok(savedToDo);
+    }
+
+    @PatchMapping("{id}")
+    public ResponseEntity<ToDo> completed(@PathVariable String id) {
+        ToDo task = toDoRepository.findById(id);
+        task.setCompleted(true);
+        return ResponseEntity.ok(toDoRepository.save(task));
+    }
+
+    @DeleteMapping("{id}")
+    public void delete(@PathVariable String id) {
+        toDoRepository.delete(ToDoBuilder.create().withId(id).build());
     }
 }
