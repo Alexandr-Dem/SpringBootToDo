@@ -15,7 +15,7 @@ import javax.validation.Valid;
  */
 
 @RestController
-@RequestMapping("/api/task")
+@RequestMapping("/api/tasks")
 public class TaskController {
 
     private CommonRepository<Task> taskRepository;
@@ -24,7 +24,7 @@ public class TaskController {
         this.taskRepository = taskRepository;
     }
 
-    @GetMapping()
+    @GetMapping
     public Iterable<Task> getAll() {
         return taskRepository.findAll();
     }
