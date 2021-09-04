@@ -33,7 +33,7 @@ public class TaskControllerTest {
         when(repositoryMock.findById(notCompletedTask.getId())).thenReturn(Optional.of(notCompletedTask));
         when(repositoryMock.save(notCompletedTask)).thenReturn(notCompletedTask);
 
-        taskController = new TaskController(repositoryMock);
+        taskController = new TaskController(repositoryMock, Mockito.mock(TaskSynchronizer.class));
     }
 
     @Test

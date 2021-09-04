@@ -4,7 +4,6 @@ import com.alexandrdem.springBootTodo.domain.Task;
 import com.alexandrdem.springBootTodo.domain.TaskBuilder;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 /**
@@ -23,7 +22,8 @@ public class TaskRepository implements CommonRepository<Task> {
             task = taskFromCache.get();
             task.setCompleted(domain.isCompleted());
             task.setDescriptions(domain.getDescriptions());
-            task.setModified(LocalDateTime.now());
+            task.setCreated(domain.getCreated());
+            task.setModified(domain.getModified());
         } else {
             task = new TaskBuilder()
                     .withDescription(domain.getDescriptions())
@@ -50,7 +50,7 @@ public class TaskRepository implements CommonRepository<Task> {
     }
 
     @Override
-    public Iterable<Task> findAll() {
+    public List<Task> findAll() {
         return tasks.values().stream()
                 .sorted(Comparator.comparing(Task::getCreated))
                 .collect(Collectors.toList());

@@ -7,6 +7,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.UUID;
 /**
  * @author AlexanderDementev on 02.09.2021
@@ -34,5 +35,18 @@ public class Task {
     public Task(String descriptions) {
         this();
         this.descriptions = descriptions;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Task task = (Task) o;
+        return completed == task.completed && Objects.equals(id, task.id) && Objects.equals(descriptions, task.descriptions);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, descriptions, completed);
     }
 }

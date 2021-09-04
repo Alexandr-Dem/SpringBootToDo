@@ -20,8 +20,11 @@ public class TaskController {
 
     private CommonRepository<Task> taskRepository;
 
-    public TaskController(CommonRepository<Task> taskRepository) {
+    private TaskSynchronizer taskSynchronizer;
+
+    public TaskController(CommonRepository<Task> taskRepository, TaskSynchronizer taskSynchronizer) {
         this.taskRepository = taskRepository;
+        this.taskSynchronizer = taskSynchronizer;
     }
 
     @GetMapping
@@ -56,6 +59,11 @@ public class TaskController {
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new TaskException(TaskException.TASK_NOT_FOUND));
         taskRepository.delete(task);
+    }
+
+    @GetMapping("sync")
+    public void syncTask(){
+        taskSynchronizer.sync();
     }
 
     @ExceptionHandler
